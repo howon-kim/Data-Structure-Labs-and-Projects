@@ -29,7 +29,7 @@ public class IntList {
      * A List with null rest, and first = 0.
      */
     public IntList() {
-    /* NOTE: public IntList () { }  would also work. */
+        /* NOTE: public IntList () { }  would also work. */
         this(0, null);
     }
 
@@ -81,22 +81,13 @@ public class IntList {
      */
 
     public static IntList dcatenate(IntList A, IntList B) {
-        /** Iterative Version
-        IntList ptr = A;
-        while(ptr.rest != null){
-            ptr = ptr.rest;
-        }
-        ptr.rest = B;
-        return A;
-         **/
-        /** Recursive Version */
-        if(A.rest == null){
-            A.rest = B;
-        }
-        else{
-            dcatenate(A.rest, B);
-        }
-        return A;
+
+        /** Recursive Version **/
+         if(A == null){
+            return B;
+         }
+         A.rest  = dcatenate(A.rest, B);
+         return A;
     }
 
     /**
@@ -104,21 +95,18 @@ public class IntList {
      * * elements of B.  May NOT modify items of A.  Use 'new'.
      */
     public static IntList catenate(IntList A, IntList B) {
-        IntList newList = new IntList(A.first, null);
-        IntList ptr = newList;
-        A = A.rest;
-        while(A != null){
-            ptr.rest = new IntList(A.first, null);
-            A = A.rest;
-            ptr = ptr.rest;
+
+        /** Recursive Version **/
+        if (A == null) {
+            if (B == null) {
+                return null;
+            }
+            return new IntList(B.first, catenate(A, B.rest));
         }
-        while(B != null){
-            ptr.rest = new IntList(B.first, null);
-            B = B.rest;
-            ptr = ptr.rest;
-        }
-        return newList;
+        return new IntList(A.first, catenate(A.rest, B));
     }
+
+
 
 
 
