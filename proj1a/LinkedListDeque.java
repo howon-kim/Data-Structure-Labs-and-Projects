@@ -23,8 +23,9 @@ public class LinkedListDeque<T> {
     /* Creates a deep copy of other */
     public LinkedListDeque(LinkedListDeque other) {
         this();
-        for (int i = 0; i < other.size(); i++)
+        for (int i = 0; i < other.size(); i++) {
             this.addLast((T) other.get(i));
+        }
         size = other.size();
     }
     /* Adds an item of type T to the front of the deque */
@@ -72,7 +73,7 @@ public class LinkedListDeque<T> {
         T temp = sentinel.next.item;
         sentinel.next.next.prev = sentinel;
         sentinel.next = sentinel.next.next;
-        Math.max(0, size--);
+        size = Math.max(0, size - 1);
         return temp;
 
     }
@@ -84,7 +85,7 @@ public class LinkedListDeque<T> {
         T temp = sentinel.prev.item;
         sentinel.prev.prev.next = sentinel;
         sentinel.prev = sentinel.prev.prev;
-        Math.max(0, size--);
+        size = Math.max(0, size - 1);
         return temp;
     }
 
@@ -95,9 +96,8 @@ public class LinkedListDeque<T> {
         Node temp = sentinel;
         if (index >= size) {
             return null;
-        }
-        else {
-            for (int i = 0; i <= index; i++){
+        } else {
+            for (int i = 0; i <= index; i++) {
                 temp = temp.next;
             }
             return temp.item;
@@ -108,8 +108,7 @@ public class LinkedListDeque<T> {
     public T getRecursive(int index) {
         if (index >= size) {
             return null;
-        }
-        else {
+        } else {
             return helper(index, sentinel.next);
         }
     }
