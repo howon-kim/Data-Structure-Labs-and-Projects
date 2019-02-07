@@ -16,7 +16,7 @@ public class ArrayDeque<T> {
         nextFirst = other.nextFirst;
         nextLast = other.nextLast;
         items = (T[]) new Object[other.items.length];
-        for(int i = 0; i < items.length; i++) {
+        for (int i = 0; i < items.length; i++) {
             items[i] = (T) other.items[i];
         }
     }
@@ -60,7 +60,7 @@ public class ArrayDeque<T> {
                 items[nextFirst] = null;
             }
             size--;
-            if (size / items.length < 0.25 && items.length >= 16) {
+            if ((double) size / items.length < 0.25 && items.length >= 16) {
                 shrinkArray();
             }
             return temp;
@@ -82,7 +82,11 @@ public class ArrayDeque<T> {
                 items[nextLast] = null;
             }
             size--;
-            if (size / items.length < 0.25 && items.length >= 16) {
+            System.out.println(size);
+            System.out.println(items.length);
+            System.out.println((double) size/items.length);
+            if ((double) size / items.length < 0.25 && items.length >= 16) {
+
                 shrinkArray();
             }
             return temp;
@@ -111,7 +115,7 @@ public class ArrayDeque<T> {
         int newIndex = (int) newSize / 2;
         nextFirst = newIndex - 1;
 
-        for(int i = 0; i < size; i++) {
+        for (int i = 0; i < size; i++) {
             newArray[newIndex] = temp[i];
             newIndex++;
         }
@@ -121,16 +125,16 @@ public class ArrayDeque<T> {
 
     private T[] iterateArray() {
         int first = nextFirst + 1;
-        int size = this.size;
+        int curSize = this.size;
         int index = 0;
-        T[] newArray = (T[]) new Object[size];
+        T[] newArray = (T[]) new Object[curSize];
 
-        while (size > 0) {
+        while (curSize > 0) {
             if (first >= items.length) {
                 first = 0;
             } else if (items[first] != null) {
                 newArray[index] = items[first];
-                size--;
+                curSize--;
                 first++;
                 index++;
             } else {
@@ -195,6 +199,19 @@ public class ArrayDeque<T> {
         hello.addFirst(15);
         hello.addFirst(16);
         hello.addFirst(17);
+        hello.addFirst(17);
+        hello.addFirst(17);
+        hello.addFirst(17);
+        hello.addFirst(17);
+        hello.addFirst(17);
+        hello.addFirst(17);
+        hello.addFirst(17);
+        hello.addFirst(17);
+        hello.addFirst(17);
+        hello.addFirst(17);
+        hello.addFirst(17);
+        hello.addFirst(17);
+
         hello.addLast(18);
         hello.addFirst(19);
         hello.removeLast()   ;  // ==> 18
