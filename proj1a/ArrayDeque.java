@@ -161,7 +161,7 @@ public class ArrayDeque<T> {
             return items[index + (nextFirst + 1)];
         }
         else{
-            return items[index - (items.length  - nextFirst + 1)];
+            return items[index - (items.length - (nextFirst + 1))];
         }
         /*
         else if(items[index + nextFirst] != null){
@@ -176,16 +176,32 @@ public class ArrayDeque<T> {
 /*
     public static void main(String[] args) {
         ArrayDeque hello = new ArrayDeque();
-        hello.addFirst(0);
-        hello.addFirst(1);
-        hello.removeLast();
-        hello.removeLast();
-        hello.addFirst(5);
-        hello.addFirst(6);
-        hello.removeLast();
-        hello.removeLast();
-        hello.addFirst(10);
-        System.out.println(hello.removeLast());
+
+        hello.addLast(0);
+        hello.removeFirst()  ;  // ==> 0
+        hello.addLast(2);
+        hello.addFirst(3);
+        hello.addLast(4);
+        hello.get(1)      ;//==> 2
+        hello.removeLast()  ; //   ==> 4
+        hello.addFirst(7);
+        hello.get(1)   ;  // ==> 3
+        hello.addFirst(9);
+        hello.get(3)    ; // ==> 2
+        hello.removeFirst() ;//    ==> 9
+        hello.removeLast()   ; //  ==> 2
+        hello.removeLast()     ; //==> 3
+        hello.addFirst(14);
+        hello.addFirst(15);
+        hello.addFirst(16);
+        hello.addFirst(17);
+        hello.addLast(18);
+        hello.addFirst(19);
+        hello.removeLast()   ;  // ==> 18
+        hello.removeLast()  ;   // ==> 7
+        hello.removeFirst();    // ==> 19
+        System.out.println(hello.get(3));
+
 
 
 
@@ -194,7 +210,7 @@ public class ArrayDeque<T> {
         System.out.println(hello.isEmpty());
 
     }
-    */
+*/
 
 
 }
