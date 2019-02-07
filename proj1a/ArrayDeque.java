@@ -62,21 +62,11 @@ public class ArrayDeque<T> {
                 items[nextFirst] = null;
             }
             size--;
+            if(size / items.length < 0.25 && items.length >= 16){
+                shrinkArray();
+            }
             return temp;
         }
-        /*
-        if(items[nextFirst + 1] != null){
-            T temp = items[nextFirst + 1];
-            items[nextFirst + 1] = null;
-            nextFirst++;
-            return temp;
-        }
-        else if(items[size - nextLast] != null){
-            T temp = items[nextLast - 1];
-
-        }
-        return items[0];
-        */
     }
 
     public T removeLast(){
@@ -96,12 +86,16 @@ public class ArrayDeque<T> {
                 items[nextLast] = null;
             }
             size--;
+            if(size / items.length < 0.25 && items.length >= 16){
+                shrinkArray();
+            }
             return temp;
         }
     }
 
     private void expandArray() {
-        T[] newArray = (T[]) new Object[size * 2];
+        int newSize = size * 2;
+        T[] newArray = (T[]) new Object[newSize];
         T[] temp = iterateArray();
         int newIndex = (int) size / 2;
         nextFirst = newIndex - 1;
@@ -111,6 +105,21 @@ public class ArrayDeque<T> {
             newIndex++;
         }
 
+        nextLast = newIndex;
+        items = newArray;
+    }
+
+    private void shrinkArray(){
+        int newSize = (int) size / 2;
+        T[] newArray = (T[]) new Object[newSize];
+        T[] temp = iterateArray();
+        int newIndex = (int) newSize / 2;
+        nextFirst = nextFirst - 1;
+
+        for(int i = 0; i < size; i++){
+            newArray[newIndex] = temp[i];
+            newIndex++;
+        }
         nextLast = newIndex;
         items = newArray;
     }
@@ -173,7 +182,7 @@ public class ArrayDeque<T> {
         return items[index];
         */
     }
-/*
+
     public static void main(String[] args) {
         ArrayDeque hello = new ArrayDeque();
 
@@ -210,7 +219,7 @@ public class ArrayDeque<T> {
         System.out.println(hello.isEmpty());
 
     }
-*/
+
 
 
 }
