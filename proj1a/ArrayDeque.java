@@ -50,9 +50,17 @@ public class ArrayDeque<T> {
             return null;
         }
         else{
-            T temp = items[nextFirst + 1];
-            items[nextFirst + 1] = null;
-            nextFirst++;
+            T temp;
+            if(nextFirst + 1 == items.length){
+                nextFirst = 0;
+                temp = items[nextFirst];
+                items[nextFirst] = null;
+            }
+            else {
+                nextFirst++;
+                temp = items[nextFirst];
+                items[nextFirst] = null;
+            }
             size--;
             return temp;
         }
@@ -70,14 +78,23 @@ public class ArrayDeque<T> {
         return items[0];
         */
     }
+
     public T removeLast(){
         if(size <= 0){
             return null;
         }
         else{
-            T temp = items[nextLast - 1];
-            items[nextLast - 1] = null;
-            nextLast--;
+            T temp;
+            if(nextLast - 1 < 0){
+                nextLast = 0;
+                temp = items[nextLast];
+                items[nextLast] = null;
+            }
+            else{
+                nextLast--;
+                temp = items[nextLast];
+                items[nextLast] = null;
+            }
             size--;
             return temp;
         }
@@ -156,31 +173,24 @@ public class ArrayDeque<T> {
         return items[index];
         */
     }
-    /*
+
     public static void main(String[] args) {
         ArrayDeque hello = new ArrayDeque();
+        hello.addFirst(0);
         hello.addFirst(1);
-        hello.addFirst(2);
+        System.out.println(hello.get(0));
         hello.addFirst(3);
         hello.addFirst(4);
-        hello.addFirst(5);
-        hello.addFirst(6);
-        hello.addFirst(7);
-        hello.addLast(8);
-        hello.addLast(9);
-        hello.addLast(10);
-        ArrayDeque hello2 = new ArrayDeque(hello);
-        hello2.printDeque();
-        System.out.println(hello2.get(7));
-        //System.out.println(hello2.removeFirst());
-        //System.out.println(hello2.removeLast());
-        //System.out.println(hello2.removeFirst());
+        hello.removeFirst();
+        System.out.println(hello.get(0));
 
 
-        hello2.printDeque();
 
+
+        hello.printDeque();
+        System.out.println(hello.isEmpty());
 
     }
-    */
+
 
 }
