@@ -21,7 +21,6 @@ public class ArrayDeque<T> {
         }
     }
 
-    /* Adds an item of type T to the front of the deque */
     public void addFirst(T item) {
         if (items[nextFirst] != null) {
             expandArray();
@@ -33,6 +32,7 @@ public class ArrayDeque<T> {
             nextFirst = items.length - 1;
         }
     }
+
     public void addLast(T item) {
         if (items[nextLast] != null) {
             expandArray();
@@ -151,6 +151,7 @@ public class ArrayDeque<T> {
     public int size() {
         return size;
     }
+
     public boolean isEmpty() {
         return size == 0;
     }
@@ -163,49 +164,5 @@ public class ArrayDeque<T> {
         } else {
             return items[index - (items.length - (nextFirst + 1))];
         }
-        /*
-        else if(items[index + nextFirst] != null){
-            return items[index + nextFirst];
-        }
-        else{
-
-        }
-        return items[index];
-        */
     }
-/*
-    public static void main(String[] args) {
-        ArrayDeque hello = new ArrayDeque();
-
-        hello.addFirst(0);
-        hello.addLast(1);
-                System.out.println(hello.get(1));
-        ;// ==> 1
-        hello.addLast(3);
-        hello.addLast(4);
-        hello.addFirst(5);
-        hello.addLast(6);
-        hello.addLast(7);
-        hello.addLast(8);
-        hello.addLast(9);
-        hello.removeFirst()    ;// ==> 5
-        hello.removeLast()    ;//  ==> 9
-        hello.addFirst(12);
-        hello.removeFirst()   ;//  ==> 12
-        hello.removeLast()  ;//    ==> 8
-        System.out.println(hello.get(2));;//==> 3
-        hello.removeLast() ;//     ==> 7
-        hello.removeLast() ;//     ==> 6
-        hello.removeLast();
-
-
-
-
-
-        hello.printDeque();
-        System.out.println(hello.isEmpty());
-
-    }
-    */
-
 }
