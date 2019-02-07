@@ -182,7 +182,7 @@ public class ArrayDeque<T> {
         return items[index];
         */
     }
-
+/*
     public static void main(String[] args) {
         ArrayDeque hello = new ArrayDeque();
 
@@ -219,7 +219,7 @@ public class ArrayDeque<T> {
         System.out.println(hello.isEmpty());
 
     }
-
+*/
 
 
 }
