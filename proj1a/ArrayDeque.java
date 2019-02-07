@@ -82,11 +82,7 @@ public class ArrayDeque<T> {
                 items[nextLast] = null;
             }
             size--;
-            System.out.println(size);
-            System.out.println(items.length);
-            System.out.println((double) size/items.length);
             if ((double) size / items.length < 0.25 && items.length >= 16) {
-
                 shrinkArray();
             }
             return temp;
@@ -146,7 +142,7 @@ public class ArrayDeque<T> {
 
     public void printDeque() {
         T[] temp = iterateArray();
-        for (int i = 0; i < size; i++){
+        for (int i = 0; i < size; i++) {
             System.out.print(temp[i].toString() + " ");
         }
         System.out.println();
