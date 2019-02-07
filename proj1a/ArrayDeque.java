@@ -86,7 +86,7 @@ public class ArrayDeque<T> {
         else{
             T temp;
             if(nextLast - 1 < 0){
-                nextLast = 0;
+                nextLast = items.length - 1;
                 temp = items[nextLast];
                 items[nextLast] = null;
             }
@@ -173,16 +173,19 @@ public class ArrayDeque<T> {
         return items[index];
         */
     }
-
+/*
     public static void main(String[] args) {
         ArrayDeque hello = new ArrayDeque();
         hello.addFirst(0);
         hello.addFirst(1);
-        System.out.println(hello.get(0));
-        hello.addFirst(3);
-        hello.addFirst(4);
-        hello.removeFirst();
-        System.out.println(hello.get(0));
+        hello.removeLast();
+        hello.removeLast();
+        hello.addFirst(5);
+        hello.addFirst(6);
+        hello.removeLast();
+        hello.removeLast();
+        hello.addFirst(10);
+        System.out.println(hello.removeLast());
 
 
 
@@ -191,6 +194,7 @@ public class ArrayDeque<T> {
         System.out.println(hello.isEmpty());
 
     }
+    */
 
 
 }
