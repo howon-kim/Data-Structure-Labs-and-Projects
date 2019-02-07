@@ -105,10 +105,10 @@ public class ArrayDeque<T> {
     }
 
     private void shrinkArray() {
-        int newSize = (int) size / 2;
+        int newSize = (int) items.length / 2;
         T[] newArray = (T[]) new Object[newSize];
         T[] temp = iterateArray();
-        int newIndex = (int) newSize / 2;
+        int newIndex = (int) newSize / 4;
         nextFirst = newIndex - 1;
 
         for (int i = 0; i < size; i++) {
@@ -173,47 +173,30 @@ public class ArrayDeque<T> {
         return items[index];
         */
     }
-/*
+
     public static void main(String[] args) {
         ArrayDeque hello = new ArrayDeque();
 
-        hello.addLast(0);
-        hello.removeFirst()  ;  // ==> 0
-        hello.addLast(2);
-        hello.addFirst(3);
+        hello.addFirst(0);
+        hello.addLast(1);
+                System.out.println(hello.get(1));
+        ;// ==> 1
+        hello.addLast(3);
         hello.addLast(4);
-        hello.get(1)      ;//==> 2
-        hello.removeLast()  ; //   ==> 4
-        hello.addFirst(7);
-        hello.get(1)   ;  // ==> 3
-        hello.addFirst(9);
-        hello.get(3)    ; // ==> 2
-        hello.removeFirst() ;//    ==> 9
-        hello.removeLast()   ; //  ==> 2
-        hello.removeLast()     ; //==> 3
-        hello.addFirst(14);
-        hello.addFirst(15);
-        hello.addFirst(16);
-        hello.addFirst(17);
-        hello.addFirst(17);
-        hello.addFirst(17);
-        hello.addFirst(17);
-        hello.addFirst(17);
-        hello.addFirst(17);
-        hello.addFirst(17);
-        hello.addFirst(17);
-        hello.addFirst(17);
-        hello.addFirst(17);
-        hello.addFirst(17);
-        hello.addFirst(17);
-        hello.addFirst(17);
-
-        hello.addLast(18);
-        hello.addFirst(19);
-        hello.removeLast()   ;  // ==> 18
-        hello.removeLast()  ;   // ==> 7
-        hello.removeFirst();    // ==> 19
-        System.out.println(hello.get(3));
+        hello.addFirst(5);
+        hello.addLast(6);
+        hello.addLast(7);
+        hello.addLast(8);
+        hello.addLast(9);
+        hello.removeFirst()    ;// ==> 5
+        hello.removeLast()    ;//  ==> 9
+        hello.addFirst(12);
+        hello.removeFirst()   ;//  ==> 12
+        hello.removeLast()  ;//    ==> 8
+        System.out.println(hello.get(2));;//==> 3
+        hello.removeLast() ;//     ==> 7
+        hello.removeLast() ;//     ==> 6
+        hello.removeLast();
 
 
 
@@ -223,5 +206,5 @@ public class ArrayDeque<T> {
         System.out.println(hello.isEmpty());
 
     }
-*/
+
 }
