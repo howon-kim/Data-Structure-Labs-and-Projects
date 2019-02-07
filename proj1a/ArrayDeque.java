@@ -7,8 +7,8 @@ public class ArrayDeque<T> {
     public ArrayDeque(){
         items = (T[]) new Object[8];
         size = 0;
-        nextFirst = 0;
-        nextLast = 1;
+        nextFirst = 3;
+        nextLast = 4;
     }
 
     public ArrayDeque(ArrayDeque other) {
@@ -46,6 +46,16 @@ public class ArrayDeque<T> {
     }
 
     public T removeFirst(){
+        if(size <= 0){
+            return null;
+        }
+        else{
+            T temp = items[nextFirst + 1];
+            items[nextFirst + 1] = null;
+            nextFirst++;
+            size--;
+            return temp;
+        }
         /*
         if(items[nextFirst + 1] != null){
             T temp = items[nextFirst + 1];
@@ -56,11 +66,21 @@ public class ArrayDeque<T> {
         else if(items[size - nextLast] != null){
             T temp = items[nextLast - 1];
 
-        }*/
+        }
         return items[0];
+        */
     }
     public T removeLast(){
-        return items[0];
+        if(size <= 0){
+            return null;
+        }
+        else{
+            T temp = items[nextLast - 1];
+            items[nextLast - 1] = null;
+            nextLast--;
+            size--;
+            return temp;
+        }
     }
 
     private void expandArray() {
@@ -117,18 +137,26 @@ public class ArrayDeque<T> {
     }
 
     public T get(int index){
-        /*
         if(index > size){
             return null;
         }
+        else if(index + (nextFirst + 1) < items.length){
+            return items[index + (nextFirst + 1)];
+        }
+        else{
+            return items[index - (items.length  - nextFirst + 1)];
+        }
+        /*
         else if(items[index + nextFirst] != null){
             return items[index + nextFirst];
         }
         else{
 
-        }*/
+        }
         return items[index];
+        */
     }
+    /*
     public static void main(String[] args) {
         ArrayDeque hello = new ArrayDeque();
         hello.addFirst(1);
@@ -143,8 +171,16 @@ public class ArrayDeque<T> {
         hello.addLast(10);
         ArrayDeque hello2 = new ArrayDeque(hello);
         hello2.printDeque();
-        System.out.print(hello.size());
+        System.out.println(hello2.get(7));
+        //System.out.println(hello2.removeFirst());
+        //System.out.println(hello2.removeLast());
+        //System.out.println(hello2.removeFirst());
+
+
+        hello2.printDeque();
+
 
     }
+    */
 
 }
