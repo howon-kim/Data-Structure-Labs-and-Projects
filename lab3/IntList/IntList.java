@@ -126,7 +126,9 @@ public class IntList {
     }
 
     public static IntList reverse(IntList A) {
-
+        if (A == null) {
+            return null;
+        }
         IntList next = A.rest;
         IntList prev = null;
         while (next != null) {
@@ -138,6 +140,10 @@ public class IntList {
         A.rest = prev;
         return A;
 
+    }
+    public static void main(String [] args) {
+        IntList a = new IntList(1, new IntList(2, null));
+        System.out.println(IntList.reverse(a));
     }
 
 
@@ -152,12 +158,12 @@ public class IntList {
 
 
 
-    /**
-     * DO NOT MODIFY ANYTHING BELOW THIS LINE! Many of the concepts below here
-     * will be introduced later in the course or feature some form of advanced
-     * trickery which we implemented to help make your life a little easier for
-     * the lab.
-     */
+        /**
+         * DO NOT MODIFY ANYTHING BELOW THIS LINE! Many of the concepts below here
+         * will be introduced later in the course or feature some form of advanced
+         * trickery which we implemented to help make your life a little easier for
+         * the lab.
+         */
 
     @Override
     public int hashCode() {
