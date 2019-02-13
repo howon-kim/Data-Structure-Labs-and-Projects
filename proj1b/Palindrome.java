@@ -18,23 +18,23 @@ public class Palindrome {
         return true;
          **/
         Deque deque = wordToDeque(word);
-        return _isPalindrome(deque);
+        return isPalindromeHelper(deque);
     }
 
-    private boolean _isPalindrome(Deque deque) {
+    private boolean isPalindromeHelper(Deque deque) {
         if (deque.size() <= 1) {
             return true;
         } else if (deque.removeFirst() != deque.removeLast()) {
             return false;
         } else {
-            return _isPalindrome(deque);
+            return isPalindromeHelper(deque);
         }
     }
 
     public boolean isPalindrome(String word, CharacterComparator cc) {
         Deque deque = wordToDeque(word);
         while (deque.size() > 1) {
-            if (!cc.equalChars((char)deque.removeFirst(), (char)deque.removeLast())) {
+            if (!cc.equalChars((char) deque.removeFirst(), (char) deque.removeLast())) {
                 return false;
             }
         }
