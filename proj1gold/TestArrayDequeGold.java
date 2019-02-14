@@ -18,8 +18,8 @@ public class TestArrayDequeGold {
             for (int i = 0; i <= testNum; i++) {
                 Integer actual = studentDeque.removeFirst();
                 Integer expected = solutionDeque.removeFirst();
-                message += "\nremoveFirst(): " + actual;
-                assertEquals(expected, actual);
+                message += "\nremoveFirst()";
+                assertEquals(message, expected, actual);
             }
         }
     }
@@ -39,7 +39,7 @@ public class TestArrayDequeGold {
             for (int i = 0; i <= testNum; i++) {
                 Integer actual = studentDeque.removeLast();
                 Integer expected = solutionDeque.removeLast();
-                message += "\nremoveLast(): " + actual;
+                message += "\nremoveLast()";
                 assertEquals(message, expected, actual);
             }
         }
@@ -60,7 +60,7 @@ public class TestArrayDequeGold {
             for (int i = 0; i <= testNum; i++) {
                 Integer actual = studentDeque.removeLast();
                 Integer expected = solutionDeque.removeLast();
-                message += "\nremoveLast(): " + actual;
+                message += "\nremoveLast()";
                 assertEquals(message, expected, actual);            }
         }
     }
@@ -81,8 +81,8 @@ public class TestArrayDequeGold {
             for (int i = 0; i <= testNum; i++) {
                 Integer actual = studentDeque.removeFirst();
                 Integer expected = solutionDeque.removeFirst();
-                message += "\nremoveFirst(): " + actual;
-                assertEquals(expected, actual);
+                message += "\nremoveFirst()";
+                assertEquals(message, expected, actual);
             }
         }
     }
