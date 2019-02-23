@@ -35,7 +35,7 @@ public class TestPlip {
         // TODO
     }
 
-    //@Test
+    @Test
     public void testChoose() {
 
         // No empty adjacent spaces; stay.

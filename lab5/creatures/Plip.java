@@ -1,14 +1,13 @@
 package creatures;
 
-import huglife.Creature;
-import huglife.Direction;
-import huglife.Action;
-import huglife.Occupant;
+import huglife.*;
 
 import java.awt.Color;
 import java.util.ArrayDeque;
 import java.util.Deque;
+import java.util.Iterator;
 import java.util.Map;
+import static huglife.HugLifeUtils.*;
 
 /**
  * An implementation of a motile pacifist photosynthesizer.
@@ -48,6 +47,7 @@ public class Plip extends Creature {
         this(1);
     }
 
+
     /**
      * Should return a color with red = 99, blue = 76, and green that varies
      * linearly based on the energy of the Plip. If the plip has zero energy,
@@ -57,7 +57,10 @@ public class Plip extends Creature {
      * that you get this exactly correct.
      */
     public Color color() {
-        g = 63;
+        r = 99; b = 76; g = 96 * (int) energy + 63;
+        if (energy >= 2) {
+            g = 255;
+        }
         return color(r, g, b);
     }
 
@@ -75,6 +78,11 @@ public class Plip extends Creature {
      */
     public void move() {
         // TODO
+        if (energy - 0.15 < 0) {
+            energy = 0;
+        } else {
+            energy -= 0.15;
+        }
     }
 
 
@@ -83,15 +91,18 @@ public class Plip extends Creature {
      */
     public void stay() {
         // TODO
+        energy += 0.2;
+        if (energy > 2) {
+            energy = 2;
+        }
     }
-
     /**
      * Plips and their offspring each get 50% of the energy, with none
      * lost to the process. Now that's efficiency! Returns a baby
      * Plip.
      */
     public Plip replicate() {
-        return this;
+        return new Plip(this.energy / 2);
     }
 
     /**
@@ -114,16 +125,31 @@ public class Plip extends Creature {
         // TODO
         // (Google: Enhanced for-loop over keys of NEIGHBORS?)
         // for () {...}
-
-        if (false) { // FIXME
-            // TODO
+        for (Map.Entry<Direction, Occupant> neighbor : neighbors.entrySet()) {
+            if (neighbor.getValue().name().equals("empty")) {
+                emptyNeighbors.addLast(neighbor.getKey());
+            }
+        }
+        if (emptyNeighbors.isEmpty()) {
+            return new Action(Action.ActionType.STAY);
         }
 
         // Rule 2
         // HINT: randomEntry(emptyNeighbors)
+        if (energy >= 1) {
+            // TODO
+            return new Action(Action.ActionType.REPLICATE, randomEntry(emptyNeighbors));
+        }
+
 
         // Rule 3
-
+        for (Map.Entry<Direction, Occupant> neighbor : neighbors.entrySet()) {
+            if (neighbor.getValue().name().equals("clorus")) {
+                if (randomInt(1, 10) > 5) {
+                    return new Action(Action.ActionType.MOVE, randomEntry(emptyNeighbors));
+                }
+            }
+        }
         // Rule 4
         return new Action(Action.ActionType.STAY);
     }
