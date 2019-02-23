@@ -58,7 +58,8 @@ public class Clorus extends Creature {
     }
 
     public Clorus replicate() {
-        return new Clorus(energy / 2);
+        energy /= 2;
+        return new Clorus(energy);
     }
 
     public Action chooseAction(Map<Direction, Occupant> neighbors) {

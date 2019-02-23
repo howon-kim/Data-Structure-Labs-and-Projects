@@ -102,7 +102,8 @@ public class Plip extends Creature {
      * Plip.
      */
     public Plip replicate() {
-        return new Plip(this.energy / 2);
+        energy /= 2;
+        return new Plip(energy);
     }
 
     /**

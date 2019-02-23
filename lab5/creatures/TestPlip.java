@@ -33,6 +33,11 @@ public class TestPlip {
     @Test
     public void testReplicate() {
         // TODO
+        Plip p = new Plip(2);
+        Plip p_replicated =p.replicate();
+        assertEquals(1, p.energy(), 0.01);
+        assertEquals(1, p_replicated.energy(), 0.01);
+
     }
 
     @Test
