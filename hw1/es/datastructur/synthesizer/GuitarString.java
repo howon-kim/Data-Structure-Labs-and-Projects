@@ -14,14 +14,23 @@ public class GuitarString {
     public GuitarString(double frequency) {
         int capacity = (int) Math.round(SR / frequency);
         buffer = new ArrayRingBuffer<>(capacity);
+        for (int i = 0; i < buffer.capacity(); i++) {
+            buffer.enqueue(0.0);
+        }
     }
 
 
     /* Pluck the guitar string by replacing the buffer with white noise. */
     public void pluck() {
+        int fillCount = buffer.fillCount();
+        for (int i = 0; i < fillCount; i++) {
+            buffer.dequeue();
+        }
+
         for (int i = 0; i < buffer.capacity(); i++) {
             buffer.enqueue(Math.random() - 0.5);
         }
+
     }
 
     /* Advance the simulation one time step by performing one iteration of

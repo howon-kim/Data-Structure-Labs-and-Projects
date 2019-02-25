@@ -70,16 +70,16 @@ public class ArrayRingBuffer<T> implements BoundedQueue<T>{
     public void enqueue(T x) {
         // TODO: Enqueue the item. Don't forget to increase fillCount and update
         //       last.
-        if(fillCount() == capacity()) {
+        if(isFull()) {
             throw new RuntimeException("Ring Buffer overflow");
+        } else {
+            rb[last] = x;
+            last++;
+            if (last == capacity()) {
+                last = 0;
+            }
+            fillCount++;
         }
-        rb[last] = x;
-        last++;
-        if (last == rb.length) {
-            last = 0;
-        }
-        fillCount++;
-        return;
     }
 
     /**
@@ -90,16 +90,17 @@ public class ArrayRingBuffer<T> implements BoundedQueue<T>{
     public T dequeue() {
         // TODO: Dequeue the first item. Don't forget to decrease fillCount and
         //       update first.
-        if(fillCount() == 0) {
+        if(isEmpty()) {
             throw new RuntimeException("Ring Buffer underflow");
+        } else {
+            T oldest = rb[first];
+            first++;
+            if (first == capacity()) {
+                first = 0;
+            }
+            fillCount--;
+            return oldest;
         }
-        T oldest = rb[first];
-        first++;
-        if (first == rb.length) {
-            first = 0;
-        }
-        fillCount--;
-        return oldest;
         //return null;
     }
 
@@ -111,11 +112,12 @@ public class ArrayRingBuffer<T> implements BoundedQueue<T>{
     public T peek() {
         // TODO: Return the first item. None of your instance variables should
         //       change.
-        if(fillCount() == 0) {
+        if(isEmpty()) {
             throw new RuntimeException("Ring Buffer underflow");
+        } else {
+            return rb[first];
         }
 
-        return rb[first];
         //return null;
     }
 
