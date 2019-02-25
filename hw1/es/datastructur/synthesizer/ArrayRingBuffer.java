@@ -111,6 +111,9 @@ public class ArrayRingBuffer<T> implements BoundedQueue<T>{
     public T peek() {
         // TODO: Return the first item. None of your instance variables should
         //       change.
+        if (fillCount() == 0) {
+            throw new RuntimeException("Ring Buffer underflow");
+        }
         return rb[first];
         //return null;
     }
