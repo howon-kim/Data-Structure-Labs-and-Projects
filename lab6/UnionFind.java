@@ -23,29 +23,20 @@ public class UnionFind {
     /* Returns the size of the set v1 belongs to. */
     public int sizeOf(int v1) {
         // TODO
-        if (union[v1] < 0) {
-            return 1;
-        }
-        return 1 + sizeOf(union[v1]);
+        return Math.abs(union[find(v1)]);
     }
 
     /* Returns the parent of v1. If v1 is the root of a tree, returns the
        negative size of the tree for which v1 is the root. */
     public int parent(int v1) {
         // TODO
-        if (union[v1] < 0) {
-            return v1;
-        }
-        return parent(union[v1]);
+        return union[v1];
     }
 
     /* Returns true if nodes v1 and v2 are connected. */
     public boolean connected(int v1, int v2) {
         // TODO
-        if (parent(v1) == parent(v2)) {
-            return true;
-        }
-        return false;
+        return find(v1) == find(v2);
     }
 
     /* Connects two elements v1 and v2 together. v1 and v2 can be any valid 
@@ -57,16 +48,13 @@ public class UnionFind {
         // TODO
         validate(v1);
         validate(v2);
-        int sizeof_v1 = sizeOf(v1);
-        int sizeof_v2 = sizeOf(v2);
-        if (sizeof_v1 > sizeof_v2) {
-            v1 = parent(v2);
-        }
-        else if (sizeof_v1 == sizeof_v2) {
-            union[parent(v1)] = parent(v2);
+        if (sizeOf(v1) <= sizeOf(v2)) {
+            union[find(v2)] += union[find(v1)];
+            union[find(v1)] = find(v2);
         }
         else {
-            v2 = parent(v1);
+            union[find(v1)] += union[find(v2)];
+            union[find(v2)] = find(v1);
         }
     }
 
@@ -74,13 +62,11 @@ public class UnionFind {
        allowing for fast search-time. */
     public int find(int vertex) {
         // TODO
-        return parent(vertex);
+        validate(vertex);
+        int p = vertex;
+        while (parent(vertex) >= 0) {
+            p = parent(vertex);
+        }
+        return p;
     }
-
-    public static void main(String args[]) {
-        UnionFind a = new UnionFind(10);
-        a.union(0, 1);
-        System.out.println(a.sizeOf(1));
-    }
-
 }
