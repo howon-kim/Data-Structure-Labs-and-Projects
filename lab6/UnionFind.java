@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 public class UnionFind {
 
     // TODO - Add instance variables?
@@ -8,6 +10,7 @@ public class UnionFind {
     public UnionFind(int n) {
         // TODO
         union = new int[n];
+        Arrays.fill(union, -1);
     }
 
     /* Throws an exception if v1 is not a valid index. */
@@ -31,7 +34,7 @@ public class UnionFind {
     public int parent(int v1) {
         // TODO
         if (union[v1] < 0) {
-            return union[v1];
+            return v1;
         }
         return parent(union[v1]);
     }
@@ -54,8 +57,13 @@ public class UnionFind {
         // TODO
         validate(v1);
         validate(v2);
-        if (sizeOf(v1) > sizeOf(v2)) {
+        int sizeof_v1 = sizeOf(v1);
+        int sizeof_v2 = sizeOf(v2);
+        if (sizeof_v1 > sizeof_v2) {
             v1 = parent(v2);
+        }
+        else if (sizeof_v1 == sizeof_v2) {
+            union[parent(v1)] = parent(v2);
         }
         else {
             v2 = parent(v1);
@@ -67,6 +75,12 @@ public class UnionFind {
     public int find(int vertex) {
         // TODO
         return parent(vertex);
+    }
+
+    public static void main(String args[]) {
+        UnionFind a = new UnionFind(10);
+        a.union(0, 1);
+        System.out.println(a.sizeOf(1));
     }
 
 }
