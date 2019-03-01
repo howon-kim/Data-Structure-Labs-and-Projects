@@ -66,7 +66,7 @@ public class UnionFind {
         validate(vertex);
         int p = vertex;
         while (union[p] >= 0) {
-            p = parent(vertex);
+            p = parent(p);
         }
         return p;
     }
