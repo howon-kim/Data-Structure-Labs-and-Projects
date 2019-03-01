@@ -48,13 +48,14 @@ public class UnionFind {
         // TODO
         validate(v1);
         validate(v2);
-        if (sizeOf(v1) <= sizeOf(v2)) {
-            union[find(v2)] += union[find(v1)];
-            union[find(v1)] = find(v2);
-        }
-        else {
-            union[find(v1)] += union[find(v2)];
-            union[find(v2)] = find(v1);
+        if(find(v1) != find(v2)) {
+            if (sizeOf(v1) <= sizeOf(v2)) {
+                union[find(v2)] += union[find(v1)];
+                union[find(v1)] = find(v2);
+            } else {
+                union[find(v1)] += union[find(v2)];
+                union[find(v2)] = find(v1);
+            }
         }
     }
 
