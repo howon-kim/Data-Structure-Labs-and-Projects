@@ -11,32 +11,34 @@ public class PercolationStats {
         if (N <= 0 && T <= 0) {
             throw new java.lang.IllegalArgumentException();
         }
-        percolation = pf.make(N);
+
         fractionsOpen = new double[T];
 
         for (int i = 0; i < T ; i++) {
-            while (percolation.percolates()) {
-                int row = StdRandom.uniform(0, N * N);
-                int col = StdRandom.uniform(0, N * N);
+            percolation = pf.make(N);
+            while (!percolation.percolates()) {
+                int row = StdRandom.uniform(0, N);
+                int col = StdRandom.uniform(0, N);
+
                 if (!percolation.isOpen(row, col)) {
                     percolation.open(row, col);
                 }
             }
-            fractionsOpen[i] = percolation.numberOfOpenSites() / N * N;
+            fractionsOpen[i] = percolation.numberOfOpenSites() / Math.pow(N, 2);
+            System.out.println(fractionsOpen[i]);
 
         }
-
     }   // perform T independent experiments on an N-by-N grid
     public double mean() {
         return StdStats.mean(fractionsOpen);
     }                                          // sample mean of percolation threshold
-   public double stddev() {
+    public double stddev() {
         return StdStats.stddev(fractionsOpen);
    }                                       // sample standard deviation of percolation threshold
-   public double confidenceLow() {
+    public double confidenceLow() {
         return mean() - (1.96 * stddev()) / fractionsOpen.length;
    }                                // low endpoint of 95% confidence interval
-   public double confidenceHigh() {
+    public double confidenceHigh() {
        return mean() + (1.96 * stddev()) / fractionsOpen.length;
 
    }                               // high endpoint of 95% confidence interval
