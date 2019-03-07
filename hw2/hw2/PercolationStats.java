@@ -14,7 +14,7 @@ public class PercolationStats {
 
         fractionsOpen = new double[T];
 
-        for (int i = 0; i < T ; i++) {
+        for (int i = 0; i < T; i++) {
             percolation = pf.make(N);
             while (!percolation.percolates()) {
                 int row = StdRandom.uniform(0, N);
@@ -32,12 +32,11 @@ public class PercolationStats {
     }                                          // sample mean of percolation threshold
     public double stddev() {
         return StdStats.stddev(fractionsOpen);
-   }                                       // sample standard deviation of percolation threshold
+    }                                       // sample standard deviation of percolation threshold
     public double confidenceLow() {
         return mean() - (1.96 * stddev()) / Math.sqrt(fractionsOpen.length);
-   }                                // low endpoint of 95% confidence interval
+    }                                // low endpoint of 95% confidence interval
     public double confidenceHigh() {
-       return mean() + (1.96 * stddev()) / Math.sqrt(fractionsOpen.length);
-
-   }                               // high endpoint of 95% confidence interval
+        return mean() + (1.96 * stddev()) / Math.sqrt(fractionsOpen.length);
+    }                               // high endpoint of 95% confidence interval
 }

@@ -2,10 +2,8 @@ package hw2;
 
 import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
-import java.util.Arrays;
-
 public class Percolation {
-    private boolean grid[][];
+    private boolean [][] grid;
     private WeightedQuickUnionUF openness;
     private WeightedQuickUnionUF connect;
     private int numOpen;
@@ -13,8 +11,7 @@ public class Percolation {
     public Percolation(int N) {
         if (N <= 0) {
             throw new java.lang.IllegalArgumentException();
-        }
-        else {
+        } else {
             grid = new boolean[N][N];
             openness = new WeightedQuickUnionUF(N * N + 2);
             connect = new WeightedQuickUnionUF(N * N + 1);
@@ -50,7 +47,7 @@ public class Percolation {
             connect.union(gridTo2D(row, col), gridTo2D(row, col + 1));
 
         }
-        if (col -1 >= 0 && isOpen(row, col - 1)) {
+        if (col - 1 >= 0 && isOpen(row, col - 1)) {
             openness.union(gridTo2D(row, col), gridTo2D(row, col - 1));
             connect.union(gridTo2D(row, col), gridTo2D(row, col - 1));
 
