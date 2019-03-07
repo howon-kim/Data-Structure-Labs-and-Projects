@@ -8,7 +8,7 @@ public class PercolationStats {
     private double [] fractionsOpen;
 
     public PercolationStats(int N, int T, PercolationFactory pf) {
-        if (N <= 0 && T <= 0) {
+        if (N <= 0 || T <= 0) {
             throw new java.lang.IllegalArgumentException();
         }
 
@@ -34,10 +34,10 @@ public class PercolationStats {
         return StdStats.stddev(fractionsOpen);
    }                                       // sample standard deviation of percolation threshold
     public double confidenceLow() {
-        return mean() - (1.96 * stddev()) / fractionsOpen.length;
+        return mean() - (1.96 * stddev()) / Math.sqrt(fractionsOpen.length);
    }                                // low endpoint of 95% confidence interval
     public double confidenceHigh() {
-       return mean() + (1.96 * stddev()) / fractionsOpen.length;
+       return mean() + (1.96 * stddev()) / Math.sqrt(fractionsOpen.length);
 
    }                               // high endpoint of 95% confidence interval
 }
