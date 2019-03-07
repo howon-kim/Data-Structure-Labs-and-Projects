@@ -25,8 +25,6 @@ public class PercolationStats {
                 }
             }
             fractionsOpen[i] = percolation.numberOfOpenSites() / Math.pow(N, 2);
-            System.out.println(fractionsOpen[i]);
-
         }
     }   // perform T independent experiments on an N-by-N grid
     public double mean() {
