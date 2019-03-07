@@ -26,17 +26,21 @@ public class PercolationStats {
             }
             fractionsOpen[i] = percolation.numberOfOpenSites() / Math.pow(N, 2);
         }
-    }   // perform T independent experiments on an N-by-N grid
+    }
+
     public double mean() {
         return StdStats.mean(fractionsOpen);
-    }                                          // sample mean of percolation threshold
+    }
+
     public double stddev() {
         return StdStats.stddev(fractionsOpen);
-    }                                       // sample standard deviation of percolation threshold
+    }
+
     public double confidenceLow() {
         return mean() - (1.96 * stddev()) / Math.sqrt(fractionsOpen.length);
-    }                                // low endpoint of 95% confidence interval
+    }
+
     public double confidenceHigh() {
         return mean() + (1.96 * stddev()) / Math.sqrt(fractionsOpen.length);
-    }                               // high endpoint of 95% confidence interval
+    }
 }

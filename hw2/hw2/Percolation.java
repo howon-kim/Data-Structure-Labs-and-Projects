@@ -52,26 +52,27 @@ public class Percolation {
             connect.union(gridTo2D(row, col), gridTo2D(row, col - 1));
 
         }
-    }       // open the site (row, col) if it is not open already
+    }
     public boolean isOpen(int row, int col) {
         checkIndexBound(row, col);
         return grid[row][col];
-    } // is the site (row, col) open?
+    }
 
     public boolean isFull(int row, int col) {
         checkIndexBound(row, col);
         return connect.connected(grid.length * grid.length, gridTo2D(row, col));
-    }  // is the site (row, col) full?
+    }
+
     public int numberOfOpenSites() {
         return numOpen;
-    }           // number of open sites
+    }
+
     public boolean percolates() {
         return openness.connected(grid.length * grid.length, grid.length * grid.length + 1);
-    }              // does the system percolate?
-    public static void main(String[] args) {
-        Percolation a = new Percolation(10);
+    }
 
-    }   // use for unit testing (not required, but keep this here for the autograder)
+    public static void main(String[] args) {
+    }
 
     // Helper Function //
     private void checkIndexBound(int row, int col) {
