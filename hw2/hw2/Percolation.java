@@ -7,6 +7,7 @@ import java.util.Arrays;
 public class Percolation {
     private boolean grid[][];
     private WeightedQuickUnionUF openness;
+    private WeightedQuickUnionUF connect;
     private int numOpen;
 
     public Percolation(int N) {
@@ -16,6 +17,7 @@ public class Percolation {
         else {
             grid = new boolean[N][N];
             openness = new WeightedQuickUnionUF(N * N + 2);
+            connect = new WeightedQuickUnionUF(N * N + 1);
             numOpen = 0;
         }
     }
@@ -28,21 +30,30 @@ public class Percolation {
         }
         if (row == 0) {
             openness.union(grid.length * grid.length, gridTo2D(row, col));
+            connect.union(grid.length * grid.length, gridTo2D(row, col));
         }
         if (row == grid.length - 1) {
             openness.union(grid.length * grid.length + 1, gridTo2D(row, col));
         }
         if (row - 1 >= 0 && isOpen(row - 1, col)) {
             openness.union(gridTo2D(row, col), gridTo2D(row - 1, col));
+            connect.union(gridTo2D(row, col), gridTo2D(row - 1, col));
+
         }
         if (row + 1 < grid.length && isOpen(row + 1, col)) {
             openness.union(gridTo2D(row, col), gridTo2D(row + 1, col));
+            connect.union(gridTo2D(row, col), gridTo2D(row + 1, col));
+
         }
         if (col + 1 < grid.length && isOpen(row, col + 1)) {
             openness.union(gridTo2D(row, col), gridTo2D(row, col + 1));
+            connect.union(gridTo2D(row, col), gridTo2D(row, col + 1));
+
         }
         if (col -1 >= 0 && isOpen(row, col - 1)) {
             openness.union(gridTo2D(row, col), gridTo2D(row, col - 1));
+            connect.union(gridTo2D(row, col), gridTo2D(row, col - 1));
+
         }
     }       // open the site (row, col) if it is not open already
     public boolean isOpen(int row, int col) {
@@ -52,7 +63,7 @@ public class Percolation {
 
     public boolean isFull(int row, int col) {
         checkIndexBound(row, col);
-        return openness.connected(grid.length * grid.length, gridTo2D(row, col));
+        return connect.connected(grid.length * grid.length, gridTo2D(row, col));
     }  // is the site (row, col) full?
     public int numberOfOpenSites() {
         return numOpen;
