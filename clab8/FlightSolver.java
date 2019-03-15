@@ -1,4 +1,10 @@
+import org.junit.Test;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.PriorityQueue;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * Solver for the Flight problem (#9) from CS 61B Spring 2018 Midterm 2.
@@ -7,14 +13,31 @@ import java.util.ArrayList;
  * considered to be in the air at the same time.
  */
 public class FlightSolver {
+    PriorityQueue flightSolver = new PriorityQueue();
 
     public FlightSolver(ArrayList<Flight> flights) {
-        /* FIX ME */
+        int passenger = flights.get(0).passengers;
+        int startTime = flights.get(0).startTime;
+        int endTime = flights.get(0).endTime;
+
+        for (int i = 1; i < flights.size(); i++) {
+            if (flights.get(i).startTime <= endTime && flights.get(i).startTime >= startTime) {
+                passenger += flights.get(i).passengers;
+                startTime = flights.get(i).startTime;
+                endTime = flights.get(i).endTime;
+            } else {
+                flightSolver.add(-passenger);
+                passenger = flights.get(i).passengers;
+                startTime = flights.get(i).startTime;
+                endTime = flights.get(i).endTime;
+            }
+        }
+        flightSolver.add(-passenger);
     }
 
     public int solve() {
         /* FIX ME */
-        return -1;
+        return -(int) flightSolver.remove();
     }
 
 }
