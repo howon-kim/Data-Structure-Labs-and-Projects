@@ -151,6 +151,7 @@ public class ArrayHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
         }
     }
     private boolean greater(int i, int j) {
+        // If j is smaller than i, its positive.
         return items.get(i).compareTo(items.get(j)) > 0;
     }
 
@@ -165,8 +166,8 @@ public class ArrayHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
 
     public static void main(String []args) {
         ArrayHeapMinPQ test = new ArrayHeapMinPQ();
-        test.add('a', 1);
-        test.add('b', 3);
-
+        test.add('a', 3);
+        test.add('b', 1);
+        test.removeSmallest();
     }
 }
