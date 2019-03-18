@@ -1,13 +1,13 @@
 package bearmaps;
-
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.NoSuchElementException;
 
 // @Source : NaiveMinPQ.java and MinPQ.java
 
 public class ArrayHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
     private ArrayList<PriorityNode> items;
     private HashMap<T, Integer> itemList;
-
     private int size;
 
     public ArrayHeapMinPQ() {
@@ -17,11 +17,11 @@ public class ArrayHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
         size = 0;
     }
 
-    private class PriorityNode implements Comparable <PriorityNode> {
+    private class PriorityNode implements Comparable<PriorityNode> {
         private T item;
         private double priority;
 
-        public PriorityNode(T i, double p) {
+        PriorityNode(T i, double p) {
             item = i;
             priority = p;
         }
@@ -47,16 +47,15 @@ public class ArrayHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
         }
 
         @Override
-        @SuppressWarnings("unchecked")
         public boolean equals(Object o) {
             if (o == null || this.getClass() != o.getClass()) {
                 return false;
             } else {
-                return ((PriorityNode) o).getItem().equals(getItem());
-                // WE ASSUME T IS COMPARABLE?
+                // return ((PriorityNode) o).getItem().equals(getItem());
+                return ((PriorityNode) o).hashCode() == hashCode();
             }
-
         }
+
         @Override
         public int hashCode() {
             return getItem().hashCode();
@@ -67,14 +66,12 @@ public class ArrayHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
      * You may assume that item is never null. */
     @Override
     public void add(T item, double priority) {
-        if(contains(item)) {
+        if (contains(item)) {
             throw new IllegalArgumentException();
         } else {
-            size++;
-            itemList.put(item, size);
+            itemList.put(item, ++size);
             items.add(new PriorityNode(item, priority));
             swim(size);
-
         }
     }
     /* Returns true if the PQ contains the given item. */
@@ -85,7 +82,7 @@ public class ArrayHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
     /* Returns the minimum item. Throws NoSuchElementException if the PQ is empty. */
     @Override
     public T getSmallest() {
-        if(size <= 0) {
+        if (size <= 0) {
             throw new NoSuchElementException();
         } else {
             return items.get(1).getItem();
@@ -106,36 +103,26 @@ public class ArrayHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
         }
     }
 
-    private void sink(int i) {
-        while (2 * i <= size) {
-            int j = 2 * i;
-            if (j < size && greater(j, j+1)) {
-                j++;
-            }
-            if (!greater(i, j)) {
-                return;
-            }
-            swap(i, j);
-            i = j;
-        }
-    }
+
     /* Returns the number of items in the PQ. */
     @Override
-    public int size() { return size; }
+    public int size() {
+        return size;
+    }
 
     /* Changes the priority of the given item. Throws NoSuchElementException if the item
      * doesn't exist. */
     @Override
     public void changePriority(T item, double priority) {
-        if(!itemList.containsKey(item)) {
+        if (!itemList.containsKey(item)) {
             throw new NoSuchElementException();
         } else {
             int index = itemList.get(item).intValue();
             double diff = items.get(index).getPriority() - priority;
             items.get(index).setPriority(priority);
-            if(diff == 0) {
+            if (diff == 0) {
                 return;
-            } else if(diff < 0) {
+            } else if (diff < 0) {
                 sink(index);
             } else {
                 swim(index);
@@ -150,7 +137,19 @@ public class ArrayHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
             i = i / 2;
         }
     }
-
+    private void sink(int i) {
+        while (2 * i <= size) {
+            int j = 2 * i;
+            if (j < size && greater(j, j + 1)) {
+                j++;
+            }
+            if (!greater(i, j)) {
+                return;
+            }
+            swap(i, j);
+            i = j;
+        }
+    }
     private boolean greater(int i, int j) {
         return items.get(i).compareTo(items.get(j)) > 0;
     }
@@ -164,13 +163,10 @@ public class ArrayHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
         itemList.replace(items.get(j).getItem(), j);
     }
 
-    public static void main(String args[]) {
+    public static void main(String []args) {
         ArrayHeapMinPQ test = new ArrayHeapMinPQ();
         test.add('a', 1);
         test.add('b', 3);
-
-
-
 
     }
 }
