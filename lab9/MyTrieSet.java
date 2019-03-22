@@ -6,7 +6,7 @@ import java.util.Set;
 
 public class MyTrieSet implements TrieSet61B {
 
-    Node root;
+    private Node root;
 
     private static class Node {
         private char c;
