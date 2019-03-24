@@ -168,7 +168,7 @@ public class ArrayHeapMinPQTest {
     public void testNaiveSpeed() {
         Stopwatch sw = new Stopwatch();
         NaiveMinPQ test1 = new NaiveMinPQ();
-        int size = 100000;
+        int size = 10000000;
 
         for (int i = 0; i < size; i += 1) {
             test1.add(i, Math.random());
@@ -176,7 +176,7 @@ public class ArrayHeapMinPQTest {
         System.out.println("Total time elapsed for add : " + sw.elapsedTime() + " seconds.");
 
         sw = new Stopwatch();
-        for (int i = 0; i < size; i += 1) {
+        for (int i = 0; i < 1000; i += 1) {
             test1.changePriority(i, Math.random());
         }
         System.out.println("Total time for changePriority : " + sw.elapsedTime() +  " seconds.");
@@ -194,7 +194,7 @@ public class ArrayHeapMinPQTest {
         System.out.println("Total time for size : " + sw.elapsedTime() +  " seconds.");
 
         sw = new Stopwatch();
-        for (int i = 0; i < size; i += 1) {
+        for (int i = 0; i < 1000; i += 1) {
             test1.removeSmallest();
         }
         System.out.println("Total time for removeSmallest : " + sw.elapsedTime() +  " seconds.");
@@ -204,7 +204,7 @@ public class ArrayHeapMinPQTest {
     public void testJavaPQSpeed() {
         Stopwatch sw = new Stopwatch();
         PriorityQueue test1 = new PriorityQueue();
-        int size = 100000;
+        int size = 10000000;
 
         for (int i = 0; i < size; i += 1) {
             test1.add(Math.random());
@@ -220,7 +220,7 @@ public class ArrayHeapMinPQTest {
         System.out.println("Total time for size : " + sw.elapsedTime() +  " seconds.");
 
         sw = new Stopwatch();
-        for (int i = 0; i < size; i += 1) {
+        for (int i = 0; i < 1000; i += 1) {
             test1.remove();
         }
         System.out.println("Total time for removeSmallest : " + sw.elapsedTime() +  " seconds.");
