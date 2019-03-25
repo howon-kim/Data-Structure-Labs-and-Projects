@@ -1,8 +1,5 @@
 package bearmaps;
 
-//import org.junit.Test;
-//import static org.junit.Assert.assertEquals;
-
 import edu.princeton.cs.algs4.Stopwatch;
 import org.junit.Test;
 
@@ -14,7 +11,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class KDTreeTest {
-    private static Random r = new Random(1000);
+    private static Random r = new Random();
 
     @Test
     public void basicTest() {
@@ -30,6 +27,8 @@ public class KDTreeTest {
         NaivePointSet naive = new NaivePointSet(List.of(p1, p2, p3, p4, p5, p6, p7));
 
         assertEquals(naive.nearest(3.0, 4.0), test.nearest(3.0, 4.0));
+        assertEquals(new Point(1.0, 5.0), naive.nearest(0.0, 7.0));
+        assertEquals(new Point(1.0, 5.0), test.nearest(0.0, 7.0));
     }
 
     @Test
@@ -45,34 +44,20 @@ public class KDTreeTest {
         KDTree test = new KDTree(points);
         NaivePointSet naive = new NaivePointSet(points);
 
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 10000; i++) {
             double x = r.nextDouble();
             double y = r.nextDouble();
-            System.out.println(i);
-            //Point sol = naive.nearest(x, y);
-            //Point mine = test.nearest(x, y);
-            //System.out.println(sol);
-            //System.out.println(Point.distance(sol, new Point(x, y)));
-            //System.out.println(mine);
-            //System.out.println(Point.distance(mine, new Point(x, y)));
-            //System.out.println(Point.distance(naive.nearest(x, y), test.nearest(x, y)));
-
-            //double sola = Point.distance(sol, new Point(x, y));
-            //double minea = Point.distance(mine, new Point(x, y));
-            System.out.println(Point.distance(naive.nearest(x, y), test.nearest(x, y)));
             assertTrue(Point.distance(naive.nearest(x, y), test.nearest(x, y)) < .000000000001);
-            //assertEquals(naive.nearest(x, y).getY(), test.nearest(x, y).getY(), .000000000001);
         }
     }
-
 
     @Test
     public void individualSpeedTest() {
         Stopwatch sw = new Stopwatch();
         List<Point> points = new ArrayList<>();
         for (int i = 0; i < 1000000; i++) {
-            double x = r.nextDouble();
-            double y = r.nextDouble();
+            double x = r.nextDouble() * 50;
+            double y = r.nextDouble() * 50;
             Point p = new Point(x, y);
             points.add(p);
         }
@@ -86,20 +71,19 @@ public class KDTreeTest {
         NaivePointSet naive = new NaivePointSet(points);
         System.out.println("Total time for making Naive Set : " + sw.elapsedTime() + " seconds.");
 
-        for (int i = 0; i < 100; i++) {
-            double x = r.nextDouble();
-            double y = r.nextDouble();
+        for (int i = 0; i < 10000; i++) {
+            double x = r.nextDouble() * 50;
+            double y = r.nextDouble() * 50;
             sw = new Stopwatch();
             naive.nearest(x, y);
-            System.out.println("nearest (Naive Set) : " + sw.elapsedTime() + " seconds.");
+            double naiveTime =  sw.elapsedTime();
 
             sw = new Stopwatch();
             test.nearest(x, y);
-            System.out.println("nearest (KD Tree) : " + sw.elapsedTime() + " seconds.");
+            double kdTime =  sw.elapsedTime();
 
-            //assertEquals(naive.nearest(x, y), test.nearest(x, y));
+            assertTrue(Point.distance(naive.nearest(x, y), test.nearest(x, y)) < .000000000001);
         }
-
     }
 
     @Test
@@ -108,9 +92,9 @@ public class KDTreeTest {
         List<Point> points = new ArrayList<>();
         List<Point> query = new ArrayList<>();
 
-        for (int i = 0; i < 1000000; i++) {
-            double x = r.nextDouble();
-            double y = r.nextDouble();
+        for (int i = 0; i < 100000; i++) {
+            double x = r.nextDouble() * 100;
+            double y = r.nextDouble() * 100;
             Point p = new Point(x, y);
             points.add(p);
         }
@@ -124,28 +108,24 @@ public class KDTreeTest {
         NaivePointSet naive = new NaivePointSet(points);
         System.out.println("Total time for making Naive Set : " + sw.elapsedTime() + " seconds.");
 
-        int queryTimes = 100000;
+        int queryTimes = 10000;
         for (int i = 0; i < queryTimes; i++) {
-            double x = r.nextDouble();
-            double y = r.nextDouble();
+            double x = r.nextDouble() * 100;
+            double y = r.nextDouble() * 100;
+            query.add(new Point(x, y));
             assertTrue(Point.distance(naive.nearest(x, y), test.nearest(x, y)) < .000000000001);
         }
 
         sw = new Stopwatch();
-        for (int i = 0; i < queryTimes; i++) {
-            double x = r.nextDouble();
-            double y = r.nextDouble();
-            naive.nearest(x, y);
+        for (Point p : query) {
+            naive.nearest(p.getX(), p.getY());
         }
-        System.out.println("nearest (Naive Set) : " + sw.elapsedTime() +  " seconds.");
+        System.out.println("nearest (Naive Set) : " + sw.elapsedTime() + " seconds.");
 
         sw = new Stopwatch();
-        for (int i = 0; i < queryTimes; i++) {
-            double x = r.nextDouble();
-            double y = r.nextDouble();
-            test.nearest(x, y);
+        for (Point p : query) {
+            test.nearest(p.getX(), p.getY());
         }
-        System.out.println("nearest (KD Tree) : " + sw.elapsedTime() +  " seconds.");
+        System.out.println("nearest (KD Tree) : " + sw.elapsedTime() + " seconds.");
     }
 }
-
