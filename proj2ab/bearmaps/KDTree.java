@@ -1,6 +1,5 @@
 package bearmaps;
 
-import java.util.Comparator;
 import java.util.List;
 
  /**
@@ -9,22 +8,23 @@ import java.util.List;
 
 public class KDTree implements PointSet {
     private Node root;
-    private final static boolean HORIZONTAL = true;
-    private final static boolean VERTICAL = false;
+    private static final boolean HORIZONTAL = true;
+    private static final boolean VERTICAL = false;
 
     private class Node {
         private Point point;
         private boolean orientation;
         private Node left, right;
 
-        public Node(Point p, boolean o) {
+        Node(Point p, boolean o) {
             point = p;
             orientation = o;
+            left = right = null;
         }
 
     }
 
-    private double pointComparator(Point i, Point j, boolean o) {
+    private int pointComparator(Point i, Point j, boolean o) {
         if (o == HORIZONTAL) {
             return Double.compare(i.getX(), j.getX());
         } else {
@@ -38,27 +38,20 @@ public class KDTree implements PointSet {
         }
     }
 
-    public void put(Point p, boolean o) {
+    private void put(Point p, boolean o) {
         root = putHelper(p, o, root); //DEFUALt HORIZONTAL
     }
 
     private Node putHelper(Point p, boolean o, Node n) {
         if (n == null) {
             return new Node(p, o);
+        }
+        if (p.equals(n.point)) {
+            return n;
         } else {
-            double compare = 0;
-            if (p.getX() == n.point.getX() && p.getY() == n.point.getY()) {
-                return n;
-            }
-            if (n.orientation == HORIZONTAL) {
-                compare = Double.compare(n.point.getX(), p.getX());
-            } else {
-                compare = Double.compare(n.point.getY(), p.getY());
-            }
+            int compare = pointComparator(n.point, p, o);
 
-            if (compare < 0) {
-                n.right = putHelper(p, !o, n.right);
-            } else if (compare > 0) {
+            if (compare > 0) {
                 n.left = putHelper(p, !o, n.left);
             } else {
                 n.right = putHelper(p, !o, n.right);
@@ -79,22 +72,35 @@ public class KDTree implements PointSet {
         if (Point.distance(n.point, goal) < Point.distance(best.point, goal)) {
             best = n;
         }
+
         Node goodSide = null; Node badSide = null;
-        if (pointComparator(n.point, goal, n.orientation) > 0) {
+        if (pointComparator(n.point, goal, n.orientation) >= 0) {
             goodSide = n.left;
             badSide = n.right;
         } else {
             goodSide = n.right;
             badSide = n.left;
         }
+
         best = nearest(goodSide, goal, best);
-        if (goodSide != null && badSide != null && Double.compare(Math.sqrt(Point.distance(best.point, goal)), Math.sqrt(Point.distance(badSide.point, goal))) >= 0) {
-            best = nearest(badSide, goal, best); // Prune
+
+        if (n.orientation == HORIZONTAL) {
+            Point newPoint = new Point(n.point.getX(), goal.getY());
+            if (Point.distance(newPoint, goal) <= Point.distance(best.point, goal)) {
+                best = nearest(badSide, goal, best);
+            }
         }
+        if (n.orientation == VERTICAL) {
+            Point newPoint2 = new Point(goal.getX(), n.point.getY());
+            if (Point.distance(newPoint2, goal) <= Point.distance(best.point, goal)) {
+                best = nearest(badSide, goal, best);
+            }
+        }
+
         return best;
     }
 
-    public static void main(String args[]) {
+    public static void main(String [] args) {
         Point p1 = new Point(2, 3);
         Point p2 = new Point(4, 2);
         Point p3 = new Point(4, 2);
