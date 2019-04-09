@@ -16,6 +16,7 @@ public class FlightSolver {
     PriorityQueue flightSolver = new PriorityQueue();
 
     public FlightSolver(ArrayList<Flight> flights) {
+
         int passenger = flights.get(0).passengers;
         int startTime = flights.get(0).startTime;
         int endTime = flights.get(0).endTime;
@@ -33,11 +34,10 @@ public class FlightSolver {
             }
         }
         flightSolver.add(-passenger);
+
     }
 
     public int solve() {
         /* FIX ME */
         return -(int) flightSolver.remove();
     }
-
-}
