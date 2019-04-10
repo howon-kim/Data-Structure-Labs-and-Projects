@@ -3,7 +3,12 @@ package bearmaps.hw4;
 import bearmaps.proj2ab.ArrayHeapMinPQ;
 import edu.princeton.cs.algs4.Stopwatch;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Collections;
+
 
 public class AStarSolver<Vertex> implements ShortestPathsSolver<Vertex> {
     private ArrayHeapMinPQ<Vertex> fringe = new ArrayHeapMinPQ();
@@ -16,8 +21,6 @@ public class AStarSolver<Vertex> implements ShortestPathsSolver<Vertex> {
     private SolverOutcome outcome = SolverOutcome.UNSOLVABLE;
 
 
-
-
     public AStarSolver(AStarGraph<Vertex> input, Vertex start, Vertex end, double timeout) {
         Stopwatch sw = new Stopwatch();
         double heuristic = input.estimatedDistanceToGoal(start, end);
@@ -26,16 +29,16 @@ public class AStarSolver<Vertex> implements ShortestPathsSolver<Vertex> {
 
         while (fringe.size() != 0) {
             Vertex v = (Vertex) fringe.removeSmallest();
-            statesExplored ++;
+            statesExplored++;
             exploreTime = sw.elapsedTime();
 
             if (v.equals(end)) {
                 outcome = SolverOutcome.SOLVED;
-                Vertex curr = end;
-                while(curr != null){
-                    solution.add(curr);
-                    solutionWeight += distTo.get(curr);
-                    curr = edgeTo.get(curr);
+                Vertex vertex = end;
+                solutionWeight = distTo.get(vertex);
+                while (vertex != null) {
+                    solution.add(vertex);
+                    vertex = edgeTo.get(vertex);
                 }
                 Collections.reverse(solution);
                 return;
@@ -56,7 +59,7 @@ public class AStarSolver<Vertex> implements ShortestPathsSolver<Vertex> {
                     distTo.put(q, distTo.get(p) + w);
                     edgeTo.put(q, p);
 
-                    if(fringe.contains(q)) {
+                    if (fringe.contains(q)) {
                         fringe.changePriority(q, distTo.get(q) + heuristic);
                     } else {
                         fringe.add(q, distTo.get(q) + heuristic);
