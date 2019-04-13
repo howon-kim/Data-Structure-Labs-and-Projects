@@ -16,6 +16,7 @@ public class TestSortAlgs {
         queue.enqueue(9);
         queue.enqueue(5);
         Queue result = QuickSort.quickSort(queue);
+        System.out.println(queue);
         Integer first = (Integer) result.dequeue();
         while(!result.isEmpty()){
             Integer second = (Integer) result.dequeue();
