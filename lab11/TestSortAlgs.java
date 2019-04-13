@@ -2,6 +2,9 @@ import edu.princeton.cs.algs4.Queue;
 
 import org.junit.Test;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 public class TestSortAlgs {
 
     @Test
@@ -11,7 +14,17 @@ public class TestSortAlgs {
 
     @Test
     public void testMergeSort() {
-
+        Queue<Integer> queue = new Queue<>();
+        queue.enqueue(6);
+        queue.enqueue(2);
+        queue.enqueue(3);
+        Queue result = MergeSort.mergeSort(queue);
+        Integer first = (Integer) result.dequeue();
+        while(!result.isEmpty()){
+            Integer second = (Integer) result.dequeue();
+            assertTrue(first.compareTo(second) <= 0);
+            first = second;
+        }
     }
 
     /**

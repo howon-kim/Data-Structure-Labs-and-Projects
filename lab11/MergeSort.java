@@ -1,4 +1,5 @@
 import edu.princeton.cs.algs4.Queue;
+import edu.princeton.cs.algs4.QuickUnionUF;
 
 public class MergeSort {
     /**
@@ -40,10 +41,20 @@ public class MergeSort {
      * @return         A Queue of queues, each containing an item from items.
      *
      */
-    private static <Item extends Comparable> Queue<Queue<Item>>
-            makeSingleItemQueues(Queue<Item> items) {
-        // Your code here!
-        return null;
+    private static <Item extends Comparable> Queue<Queue<Item>> makeSingleItemQueues(Queue<Item> items) {
+        Queue queue = new Queue();
+        for (Item i : items) {
+            Queue temp = new Queue();
+            temp.enqueue(i);
+            queue.enqueue(temp);
+        }
+        return queue;
+    }
+    public static void main (String []args){
+        Queue queue = new Queue();
+        queue.enqueue(1);
+        queue.enqueue(2);
+        queue.enqueue(3);
     }
 
     /**
@@ -59,10 +70,12 @@ public class MergeSort {
      *              greatest.
      *
      */
-    private static <Item extends Comparable> Queue<Item> mergeSortedQueues(
-            Queue<Item> q1, Queue<Item> q2) {
-        // Your code here!
-        return null;
+    private static <Item extends Comparable> Queue<Item> mergeSortedQueues(Queue<Item> q1, Queue<Item> q2) {
+        Queue queue = new Queue();
+        while (!q1.isEmpty() || !q2.isEmpty()) {
+            queue.enqueue(getMin(q1, q2));
+        }
+        return queue;
     }
 
     /**
@@ -75,9 +88,16 @@ public class MergeSort {
      * @return         A Queue containing every item in "items".
      *
      */
-    public static <Item extends Comparable> Queue<Item> mergeSort(
-            Queue<Item> items) {
-        // Your code here!
-        return items;
+    public static <Item extends Comparable> Queue<Item> mergeSort(Queue<Item> items) {
+        Queue queue = makeSingleItemQueues(items);
+        while (!queue.isEmpty()) {
+            Queue first = (Queue) queue.dequeue();
+            if (queue.isEmpty()) {
+                return first;
+            }
+            Queue second = (Queue) queue.dequeue();
+            queue.enqueue(mergeSortedQueues(first, second));
+        }
+        return queue;
     }
 }
