@@ -9,7 +9,19 @@ public class TestSortAlgs {
 
     @Test
     public void testQuickSort() {
-
+        Queue<Integer> queue = new Queue<>();
+        queue.enqueue(1);
+        queue.enqueue(3);
+        queue.enqueue(2);
+        queue.enqueue(9);
+        queue.enqueue(5);
+        Queue result = QuickSort.quickSort(queue);
+        Integer first = (Integer) result.dequeue();
+        while(!result.isEmpty()){
+            Integer second = (Integer) result.dequeue();
+            assertTrue(first.compareTo(second) <= 0);
+            first = second;
+        }
     }
 
     @Test
