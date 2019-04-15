@@ -2,6 +2,7 @@ package bearmaps.proj2c.server.handler.impl;
 
 import bearmaps.proj2c.AugmentedStreetMapGraph;
 import bearmaps.proj2c.server.handler.APIRouteHandler;
+import edu.princeton.cs.algs4.In;
 import spark.Request;
 import spark.Response;
 import bearmaps.proj2c.utils.Constants;
@@ -12,10 +13,8 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.util.Base64;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 
 import static bearmaps.proj2c.utils.Constants.SEMANTIC_STREET_GRAPH;
 import static bearmaps.proj2c.utils.Constants.ROUTE_LIST;
@@ -25,7 +24,16 @@ import static bearmaps.proj2c.utils.Constants.ROUTE_LIST;
  * will be rastered into one large image to be displayed to the user.
  * @author rahul, Josh Hug, _________
  */
+
 public class RasterAPIHandler extends APIRouteHandler<Map<String, Double>, Map<String, Object>> {
+
+    private static final double ULLON = -122.2998046875;
+    private static final double LRLON = -122.2119140625;
+    private static final double ULLAT = 37.892195547244356;
+    private static final double LRLAT = 37.82280243352756;
+    private static final double INTLON = (LRLON - ULLON);
+    private static final double INTLAT = (ULLAT - LRLAT);
+
 
     /**
      * Each raster request to the server will have the following parameters
@@ -84,12 +92,128 @@ public class RasterAPIHandler extends APIRouteHandler<Map<String, Double>, Map<S
      */
     @Override
     public Map<String, Object> processRequest(Map<String, Double> requestParams, Response response) {
-        //System.out.println("yo, wanna know the parameters given by the web browser? They are:");
-        //System.out.println(requestParams);
+        System.out.println("yo, wanna know the parameters given by the web browser? They are:");
+        System.out.println(requestParams);
         Map<String, Object> results = new HashMap<>();
         System.out.println("Since you haven't implemented RasterAPIHandler.processRequest, nothing is displayed in "
                 + "your browser.");
+
+        int [] position =  findLocation(requestParams);
+        if (position == null) {
+            results.put("raster_ul_lon", ULLON);
+            results.put("raster_lr_lon", ULLON);
+            results.put("raster_ul_lat", ULLAT);
+            results.put("raster_lr_lat", ULLAT);
+            results.put("render_grid", new String[0][0]);
+            results.put("depth", 0);
+            results.put("query_success", false);
+            return results;
+        }
+        int x_left = position[0];
+        int x_right = position[1];
+        int y_left = position[2];
+        int y_right = position[3];
+        int depth = position[4];
+        String[][] render_grid = new String[y_right - y_left + 1][x_right - x_left + 1];
+        int row = 0; int col = 0;
+
+        for (int i = y_left; i <= y_right; i++){
+            for (int j = x_left; j <= x_right; j++){
+                render_grid[row][col] = "d" + depth + "_x" + j + "_y" + i + ".png";
+                col++;
+            }
+            row++;
+            col = 0;
+        }
+
+        double interval_lon = INTLON  / Math.pow(2, depth);
+        double interval_lat = INTLAT / Math.pow(2, depth);
+
+        results.put("raster_ul_lon", ULLON + interval_lon * x_left);
+        results.put("raster_lr_lon", ULLON + interval_lon * (x_right + 1));
+        results.put("raster_ul_lat", ULLAT - interval_lat * y_left);
+        results.put("raster_lr_lat", ULLAT - interval_lat * (y_right + 1));
+        results.put("render_grid", render_grid);
+        results.put("depth", depth);
+        results.put("query_success", true);
         return results;
+
+    }
+
+    private double londpp(Map<String, Double> requestParams) {
+        double ullon = requestParams.get("ullon");
+        double lrlon = requestParams.get("lrlon");
+        double width = requestParams.get("w");
+        return (lrlon - ullon) / width;
+    }
+
+    private double londpp(double ullon, double lrlon, double width) {
+        return (lrlon - ullon) / width;
+    }
+
+    private int findDepth(Map<String, Double> requestParams) {
+        int depth = 0;
+        double curr_londpp = londpp(ULLON, LRLON, 256);
+        double user_londpp = londpp(requestParams);
+        System.out.println(curr_londpp + "user: " + user_londpp);
+
+        while (curr_londpp >= user_londpp && depth < 7) {
+
+            curr_londpp /= 2;
+            depth += 1;
+        }
+        return depth;
+    }
+
+    private int[] findLocation(Map<String, Double> requestParams) {
+        int depth = findDepth(requestParams);
+        double user_ullon = requestParams.get("ullon");
+        double user_lrlon = requestParams.get("lrlon");
+        double user_ullat = requestParams.get("ullat");
+        double user_lrlat = requestParams.get("lrlat");
+
+        double interval_lon = (LRLON - ULLON)  / Math.pow(2, depth);
+        double interval_lat = (ULLAT - LRLAT) / Math.pow(2, depth);
+
+        int pos_ullon, pos_lrlon, pos_ullat, pos_lrlat;
+
+        if(user_ullon < ULLON || user_ullon > LRLON
+        && user_lrlon < ULLON || user_lrlon > LRLON
+        && user_ullat > ULLAT || user_ullat < LRLAT
+        && user_lrlat > ULLAT || user_ullat < LRLAT) {
+            return null;
+        }
+        if(user_ullon < ULLON) {
+            pos_ullon = 0;
+        } else {
+            pos_ullon = (int) ((user_ullon - ULLON) / interval_lon);
+        }
+        if(user_lrlon > LRLON) {
+            pos_lrlon = (int) Math.pow(2, depth) - 1;
+        } else {
+            pos_lrlon = (int) ((user_lrlon - ULLON) / interval_lon);
+        }
+        if(user_ullat > ULLAT) {
+            pos_ullat = 0;
+        }
+        else {
+            pos_ullat = (int) ((ULLAT - user_ullat) / interval_lat);
+        }
+        if(user_lrlat < LRLAT) {
+            pos_lrlat = (int) Math.pow(2, depth) - 1;
+        } else {
+            pos_lrlat = (int) ((ULLAT - user_lrlat) / interval_lat);
+        }
+
+        /* DEBUG */
+        System.out.println("Depth : " + depth);
+        System.out.println("pos_ullon : " + pos_ullon);
+        System.out.println("pos_lrlon : " + pos_lrlon);
+        System.out.println("pos_ullat : " + pos_ullat);
+        System.out.println("pos_lrlat : " + pos_lrlat);
+
+
+        return new int[]{pos_ullon, pos_lrlon, pos_ullat, pos_lrlat, depth};
     }
 
     @Override
