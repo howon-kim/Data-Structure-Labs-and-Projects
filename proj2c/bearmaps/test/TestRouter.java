@@ -15,7 +15,9 @@ import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 
-/** Test of the routing part of the assignment. */
+/**
+ * Test of the routing part of the assignment.
+ */
 public class TestRouter {
     private static final String PARAMS_FILE = "../library-sp19/data/proj2c_test_inputs/path_params.txt";
     private static final String RESULTS_FILE = "../library-sp19/data/proj2c_test_inputs/path_results.txt";
