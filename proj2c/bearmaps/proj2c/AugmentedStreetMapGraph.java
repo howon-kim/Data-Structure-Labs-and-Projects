@@ -17,6 +17,7 @@ import java.util.*;
 public class AugmentedStreetMapGraph extends StreetMapGraph {
 
     private Map<Point, Long> ids;
+    private Map<String, List<Point>> names;
     private KDTree points;
 
     public AugmentedStreetMapGraph(String dbPath) {
@@ -25,10 +26,17 @@ public class AugmentedStreetMapGraph extends StreetMapGraph {
         List<Node> nodes = this.getNodes();
         List<Point> data = new LinkedList<>();
         ids = new HashMap<>();
-
+        names = new HashMap<>();
         for (Node node : nodes) {
+            Point point = new Point(node.lon(), node.lat());
+            if(names.containsKey(node.name())) {
+                names.get(node.name()).add(point);
+            } else {
+                List<Point> locations = new LinkedList<>();
+                locations.add(point);
+                names.put(node.name(), locations);
+            }
             if(!neighbors(node.id()).isEmpty()) {
-                Point point = new Point(node.lon(), node.lat());
                 data.add(point);
                 ids.put(point, node.id());
             }
@@ -75,7 +83,15 @@ public class AugmentedStreetMapGraph extends StreetMapGraph {
      * "id" -> Number, The id of the node. <br>
      */
     public List<Map<String, Object>> getLocations(String locationName) {
-        return new LinkedList<>();
+        String name = cleanString(locationName);
+        List<Map<String, Point>> result = new LinkedList<>();
+        for(Point n : names.get(name)) {
+            Map<String, Point> temp = new HashMap<>();
+            temp.put(locationName, n);
+            result.add(temp);
+        }
+        System.out.println(result.size());
+        return (List) result;
     }
 
 
