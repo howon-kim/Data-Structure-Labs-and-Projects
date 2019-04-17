@@ -90,7 +90,6 @@ public class AugmentedStreetMapGraph extends StreetMapGraph {
     public static List<Map<String, Object>> getLocations(String locationName) {
         String name = cleanString(locationName);
         List<Map<String, Object>> result = new LinkedList<>();
-        System.out.println(names.size());
         for(Point n : names.get(name)) {
             Map<String, Object> temp = new HashMap<>();
             temp.put("lat",  n.getX());
@@ -99,7 +98,6 @@ public class AugmentedStreetMapGraph extends StreetMapGraph {
             temp.put("id", ids.get(n));
             result.add(temp);
         }
-        System.out.println(result.size());
         return result;
     }
 
