@@ -91,12 +91,12 @@ public class AugmentedStreetMapGraph extends StreetMapGraph {
      * "id" -> Number, The id of the node. <br>
      */
     public static List<Map<String, Object>> getLocations(String locationName) {
-        String name =  locationName;
         List<Map<String, Object>> result = new LinkedList<>();
         for(Point n : names.get(cleanString(locationName))) {
             Map<String, Object> temp = new HashMap<>();
             temp.put("lat",  n.getY());
             temp.put("lon", n.getX());
+            System.out.println(locationName);
             temp.put("name", locationName);
             temp.put("id", allIds.get(n));
             result.add(temp);
@@ -113,5 +113,5 @@ public class AugmentedStreetMapGraph extends StreetMapGraph {
     private static String cleanString(String s) {
         return s.replaceAll("[^a-zA-Z ]", "").toLowerCase();
     }
-
+    
 }
