@@ -4,6 +4,7 @@ import bearmaps.hw4.streetmap.Node;
 import bearmaps.hw4.streetmap.StreetMapGraph;
 import bearmaps.proj2ab.KDTree;
 import bearmaps.proj2ab.Point;
+import edu.princeton.cs.algs4.TST;
 
 import java.util.*;
 
@@ -15,10 +16,11 @@ import java.util.*;
  * @author Alan Yao, Josh Hug, Howon Kim
  */
 public class AugmentedStreetMapGraph extends StreetMapGraph {
-
-    private static Map<Point, Long> ids;
-    private static Map<String, List<Map<String, Object>>> names; // cancel static later
+    private static Map<String, List<Map<String, Object>>> names;
+    private Map<Point, Long> ids;
     private KDTree points;
+    private TST tries;
+
 
     public AugmentedStreetMapGraph(String dbPath) {
         super(dbPath);
@@ -27,12 +29,16 @@ public class AugmentedStreetMapGraph extends StreetMapGraph {
         List<Point> data = new LinkedList<>();
         ids = new HashMap<>();
         names = new HashMap<>();
+        tries = new TST();
 
         for (Node node : nodes) {
             Point point = new Point(node.lon(), node.lat());
             if(node.name() != null) {
                 String cleanedName = cleanString(node.name());
                 Map<String, Object> temp = new HashMap<>();
+                if(!cleanedName.isEmpty()){
+                    tries.put(cleanedName, node);
+                }
                 temp.put("lat", point.getY());
                 temp.put("lon", point.getX());
                 temp.put("name", node.name());
@@ -75,7 +81,15 @@ public class AugmentedStreetMapGraph extends StreetMapGraph {
      * cleaned <code>prefix</code>.
      */
     public List<String> getLocationsByPrefix(String prefix) {
-        return new LinkedList<>();
+        String cleanedName = cleanString(prefix);
+        List<String> results = new LinkedList<>();
+        for (Object s: tries.keysWithPrefix(cleanedName)){
+            List<Map<String, Object>> temp = getLocations((String) s);
+            for (int i = 0; i < temp.size(); i++) {
+                results.add((String) temp.get(i).get("name"));
+            }
+        }
+        return results;
     }
 
     /**
