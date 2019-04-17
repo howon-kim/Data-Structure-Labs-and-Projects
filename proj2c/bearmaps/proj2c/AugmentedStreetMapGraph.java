@@ -16,8 +16,8 @@ import java.util.*;
  */
 public class AugmentedStreetMapGraph extends StreetMapGraph {
 
-    private Map<Point, Long> ids;
-    private Map<String, List<Point>> names;
+    private static Map<Point, Long> ids;
+    private static Map<String, List<Point>> names; // cancel static later
     private KDTree points;
 
     public AugmentedStreetMapGraph(String dbPath) {
@@ -27,14 +27,19 @@ public class AugmentedStreetMapGraph extends StreetMapGraph {
         List<Point> data = new LinkedList<>();
         ids = new HashMap<>();
         names = new HashMap<>();
+
         for (Node node : nodes) {
             Point point = new Point(node.lon(), node.lat());
-            if(names.containsKey(node.name())) {
-                names.get(node.name()).add(point);
-            } else {
-                List<Point> locations = new LinkedList<>();
-                locations.add(point);
-                names.put(node.name(), locations);
+            String name = node.name();
+            if(name != null) {
+                String cleanedName = cleanString(name);
+                if (names.containsKey(cleanedName)) {
+                    names.get(cleanedName).add(point);
+                } else {
+                    List<Point> locations = new LinkedList<>();
+                    locations.add(point);
+                    names.put(cleanedName, locations);
+                }
             }
             if(!neighbors(node.id()).isEmpty()) {
                 data.add(point);
@@ -82,18 +87,21 @@ public class AugmentedStreetMapGraph extends StreetMapGraph {
      * "name" -> String, The actual name of the node. <br>
      * "id" -> Number, The id of the node. <br>
      */
-    public List<Map<String, Object>> getLocations(String locationName) {
+    public static List<Map<String, Object>> getLocations(String locationName) {
         String name = cleanString(locationName);
-        List<Map<String, Point>> result = new LinkedList<>();
+        List<Map<String, Object>> result = new LinkedList<>();
+        System.out.println(names.size());
         for(Point n : names.get(name)) {
-            Map<String, Point> temp = new HashMap<>();
-            temp.put(locationName, n);
+            Map<String, Object> temp = new HashMap<>();
+            temp.put("lat",  n.getX());
+            temp.put("lon", n.getY());
+            temp.put("name", locationName);
+            temp.put("id", ids.get(n));
             result.add(temp);
         }
         System.out.println(result.size());
-        return (List) result;
+        return result;
     }
-
 
     /**
      * Useful for Part III. Do not modify.
