@@ -35,13 +35,12 @@ public class AugmentedStreetMapGraph extends StreetMapGraph {
             String name = node.name();
             allIds.put(point, node.id());
             if(name != null) {
-                String cleanedName = cleanString(name);
-                if (names.containsKey(cleanedName)) {
-                    names.get(cleanedName).add(point);
+                if (names.containsKey(name)) {
+                    names.get(name).add(point);
                 } else {
                     List<Point> locations = new LinkedList<>();
                     locations.add(point);
-                    names.put(cleanedName, locations);
+                    names.put(name, locations);
                 }
             }
             if(!neighbors(node.id()).isEmpty()) {
@@ -92,11 +91,10 @@ public class AugmentedStreetMapGraph extends StreetMapGraph {
      */
     public static List<Map<String, Object>> getLocations(String locationName) {
         List<Map<String, Object>> result = new LinkedList<>();
-        for(Point n : names.get(cleanString(locationName))) {
+        for(Point n : names.get(locationName)) {
             Map<String, Object> temp = new HashMap<>();
             temp.put("lat",  n.getY());
             temp.put("lon", n.getX());
-            System.out.println(locationName);
             temp.put("name", locationName);
             temp.put("id", allIds.get(n));
             result.add(temp);
@@ -113,5 +111,5 @@ public class AugmentedStreetMapGraph extends StreetMapGraph {
     private static String cleanString(String s) {
         return s.replaceAll("[^a-zA-Z ]", "").toLowerCase();
     }
-    
+
 }
